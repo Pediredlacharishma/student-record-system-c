@@ -6,7 +6,7 @@ struct Student {
     char name[50];
     float marks;
 };
-
+void deleteStudent();
 void addStudent();
 void viewStudents();
 void searchStudent();
@@ -120,8 +120,8 @@ void searchStudent() {
 
     fclose(fp);
 }
-void searchStudent() {
-    FILE *fp;
+void deleteStudent() {
+    FILE *fp, *temp;
     struct Student s;
     int roll, found = 0;
 
@@ -131,23 +131,31 @@ void searchStudent() {
         return;
     }
 
-    printf("Enter roll number to search: ");
+    temp = fopen("temp.dat", "wb");
+
+    printf("Enter roll number to delete: ");
     scanf("%d", &roll);
 
     while (fread(&s, sizeof(struct Student), 1, fp)) {
         if (s.roll == roll) {
-            printf("\nStudent Found!\n");
-            printf("Roll: %d\n", s.roll);
-            printf("Name: %s\n", s.name);
-            printf("Marks: %.2f\n", s.marks);
             found = 1;
-            break;
+        } else {
+            fwrite(&s, sizeof(struct Student), 1, temp);
         }
     }
 
-    if (!found) {
+    fclose(fp);
+    fclose(temp);
+
+    remove("students.dat");
+    rename("temp.dat", "students.dat");
+
+    if (found) {
+        printf("Student record deleted successfully.\n");
+    } else {
         printf("Student not found.\n");
     }
+}
 
     fclose(fp);
 }

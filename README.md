@@ -39,5 +39,3 @@ structures and file handling.
 Charishma Pediredla  
 B.Tech CSE (Artificial Intelligence)
 
-
-Exit

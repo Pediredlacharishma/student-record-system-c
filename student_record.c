@@ -83,3 +83,34 @@ void viewStudents() {
 
     fclose(fp);
 }
+void searchStudent() {
+    FILE *fp;
+    struct Student s;
+    int roll, found = 0;
+
+    fp = fopen("students.dat", "rb");
+    if (fp == NULL) {
+        printf("No records found!\n");
+        return;
+    }
+
+    printf("Enter roll number to search: ");
+    scanf("%d", &roll);
+
+    while (fread(&s, sizeof(struct Student), 1, fp)) {
+        if (s.roll == roll) {
+            printf("\nStudent Found!\n");
+            printf("Roll: %d\n", s.roll);
+            printf("Name: %s\n", s.name);
+            printf("Marks: %.2f\n", s.marks);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Student not found.\n");
+    }
+
+    fclose(fp);
+}

@@ -39,9 +39,47 @@ int main() {
 }
 
 void addStudent() {
-    printf("Add Student function called.\n");
-}
+    FILE *fp;
+    struct Student s;
 
+    fp = fopen("students.dat", "ab");
+    if (fp == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    printf("Enter Roll Number: ");
+    scanf("%d", &s.roll);
+
+    printf("Enter Name: ");
+    scanf(" %[^\n]", s.name);
+
+    printf("Enter Marks: ");
+    scanf("%f", &s.marks);
+
+    fwrite(&s, sizeof(struct Student), 1, fp);
+    fclose(fp);
+
+    printf("Student record added successfully!\n");
+}
 void viewStudents() {
-    printf("View Students function called.\n");
+    FILE *fp;
+    struct Student s;
+
+    fp = fopen("students.dat", "rb");
+    if (fp == NULL) {
+        printf("No records found!\n");
+        return;
+    }
+
+    printf("\n--- Student Records ---\n");
+
+    while (fread(&s, sizeof(struct Student), 1, fp)) {
+        printf("Roll: %d\n", s.roll);
+        printf("Name: %s\n", s.name);
+        printf("Marks: %.2f\n", s.marks);
+        printf("----------------------\n");
+    }
+
+    fclose(fp);
 }
